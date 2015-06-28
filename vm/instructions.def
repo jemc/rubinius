@@ -410,6 +410,30 @@ instruction move_down(positions) [ +positions -- +positions ]
   STACK_PTR[-positions] = val;
 end
 
+# [Description]
+#   The value at the specified number of _positions_ deep is moved to the top
+#   of the stack, with all values above that position shuffling down by one.
+# [Stack Before]
+#   obj1
+#   obj2
+#   ...
+#   objn
+# [Stack After]
+#   objn
+#   obj1
+#   obj2
+#   ...
+
+instruction move_up(positions) [ +positions -- +positions ]
+  Object* val = STACK_PTR[-positions];
+  for(int i = 0; i < positions; i++) {
+    int current = -i;
+    int target = current - 1;
+    STACK_PTR[target] = STACK_PTR[current];
+  }
+  STACK_PTR[0] = val;
+end
+
 section "Manipulate local variables"
 
 # [Description]

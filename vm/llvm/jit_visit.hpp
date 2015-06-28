@@ -587,6 +587,20 @@ namespace rubinius {
       store_stack_back_position(positions, val);
     }
 
+    void visit_move_up(opcode positions) {
+      Value* val = stack_back(positions);
+
+      for(opcode i = 0; i < positions; i++) {
+        int current = i;
+        int target = current + 1;
+
+        Value* tmp = stack_back(current);
+        store_stack_back_position(target, tmp);
+      }
+
+      store_stack_back_position(0, val);
+    }
+
     void visit_check_frozen() {
       Value* recv = stack_top();
 
